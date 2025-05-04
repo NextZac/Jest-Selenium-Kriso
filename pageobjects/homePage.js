@@ -14,7 +14,7 @@ const addToCartBtn = By.id('btn_addtocart')
 const cartMessage = By.css('.item-messagebox')
 const cartBackBtn = By.className('cartbtn-event back')
 const cartForwardBtn = By.className('cartbtn-event forward')
-
+const categoryBtn = By.id("cat-big-btn");
 
 module.exports = class Homepage extends Page  {
 
@@ -52,5 +52,20 @@ module.exports = class Homepage extends Page  {
     async openShoppingCart() {
         await super.findAndClick(cartForwardBtn)
         return new Cartpage(super.getDriver())
+    }
+
+    async verifySectionVisibility(sectionName) {
+        const el = await super.getElement(
+            By.xpath(`//a[contains(string(), "${sectionName}")]`),
+        );
+
+        expect(el).not.toBeNull();
+    }
+
+    async navigateToCategory(category) {
+        await super.findAndClick(categoryBtn);
+        await super.findAndClick(
+            By.xpath(`//a[contains(string(), "${category}")]`),
+        );
     }
 }
